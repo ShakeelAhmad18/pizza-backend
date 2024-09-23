@@ -33,7 +33,7 @@ const getOrders=asyncHandler( async (req,res)=>{
     const orders=await Order.find({userId:req.user.id}).populate({
         path:'items.itemId',
         select:"name image price"
-    })
+    }).sort('-createdAt')
 
     res.status(200).json(orders)
 } )
