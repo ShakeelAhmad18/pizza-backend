@@ -60,8 +60,9 @@ const registerUser=asyncHandler( async (req,res)=>{
         email
       })
   }else{
-     res.status(401)
-     throw new Error('invlid user data')
+
+     res.status(401).json({error:'Invalid user data'})
+
   }
 
 })
@@ -117,8 +118,7 @@ if(user && passwordIsCorrect){
     }
   )
 }else{
-  res.status(400)
-  throw new Error('Invalid Details')
+  res.status(400).json({error:'InValid User Details'})
 }
 } )
 
@@ -179,3 +179,4 @@ module.exports={
     loginStatus,
     getUser
 }
+
