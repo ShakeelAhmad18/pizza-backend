@@ -1,6 +1,10 @@
 const asyncHandler =require('express-async-handler');
 const Order = require('../model/orderModel');
 const axios=require('axios')
+  const formData = require('form-data');
+  const Mailgun = require('mailgun.js');
+  const mailgun = new Mailgun(formData);
+  const mg = mailgun.client({username: 'delicious Pizza', key: process.env.MAILGUN_API_KEY || '1d544788b383d19ebc4edf19de2bccec-3724298e-60105952'});
 
 
 const createOrder=asyncHandler( async (req,res)=>{
@@ -27,7 +31,6 @@ const createOrder=asyncHandler( async (req,res)=>{
 
 
 //get all orders
-
 const getOrders=asyncHandler( async (req,res)=>{
 
     const orders=await Order.find({userId:req.user.id}).populate({
@@ -107,7 +110,7 @@ const sendEmail = asyncHandler(async (req, res) => {
     console.log('items is not array')
   }
 
-  const apiKey = 'mlsn.0a6a4bc1dbd66ef5243add8c9730fa0b76f48f563ce794716eb44f8a355f323a';
+  const apiKey = 'mlsn.5ae9b50004bc60bd2a09a98d501563d6b46c03db2415a4267ee09a6f4687739c';
   
   const itemsList = items.map(item => {
     return `
@@ -185,7 +188,7 @@ const sendEmail = asyncHandler(async (req, res) => {
         <div class="card-header">
           <h1>Dear ${user_name}</h1>
           <h2>Order No:${orderNo}</h2>
-          <p>Thank you for your order at The Pizza Shop!</p>
+          <p>Thank you for your order at The Pizza Delicious!</p>
         </div>
         <div class="card-body">
           <h1>Your order has been confirmed</h1>
@@ -194,13 +197,14 @@ const sendEmail = asyncHandler(async (req, res) => {
           <p>Pay on Delivery: <span class="highlight">$${totalPrice}</span></p>
         </div>
         <div class="card-footer">
-          <p>Best regards,<br>The Pizza Shop Team</p>
+          <p>Best regards,<br>The Pizza Delicious Team</p>
         </div>
       </div>
     </body>
     </html>
     `,
   };
+
 
   try {
     const response = await axios.post('https://api.mailersend.com/v1/email', emailData, {
@@ -216,7 +220,6 @@ const sendEmail = asyncHandler(async (req, res) => {
 });
 
   
-
 module.exports={
     createOrder,
     getOrders,

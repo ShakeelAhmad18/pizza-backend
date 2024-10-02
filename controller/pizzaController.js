@@ -20,6 +20,7 @@ const couldinary=require('cloudinary').v2
     uploadFile=await couldinary.uploader.upload(req.file.path,{
         folder:"Menu Pizza",resource_type:'image'
     })
+    
   } catch (error) {
     res.status(500)
     throw new Error('Images could not be uploaded')
