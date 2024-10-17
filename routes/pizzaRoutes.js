@@ -1,6 +1,6 @@
 const express=require('express')
 const { upload } = require('../utils/fileUploads')
-const {createMenu, getMenu, deleteMenuItem, getItemById} = require('../controller/pizzaController')
+const {createMenu, getMenu, deleteMenuItem, getItemById, updateMenu} = require('../controller/pizzaController')
 
 
  const router=express.Router()
@@ -9,5 +9,6 @@ const {createMenu, getMenu, deleteMenuItem, getItemById} = require('../controlle
  router.get('/menu',getMenu)
  router.delete('/menu/:id',deleteMenuItem)
  router.get('/getItem/:id',getItemById)
+ router.patch('/updateMenu/:id',updateMenu)
 
  module.exports=router;

@@ -90,13 +90,69 @@ const getItemById=asyncHandler( async (req,res)=>{
    if(!pizza){
     res.status(404).json('Order not Found')
    }
-
+  
    res.status(200).json(pizza)
    
 } )
 
 
 //updated the menu
+
+const updateMenu=async (req,res)=>{
+   const {name,ingredients,price,category,sizes,flavors,discount,soldOut}=req.body;
+   const {id}=req.params;
+
+   const findMenu=await Menu.findById(id)
+
+   if(!findMenu){
+    return res.status(404).json('Item not Found')
+   }
+
+
+   //handle Upload Image
+   const fileData={};
+
+   if(req.file){
+   //save the image to cloudinary;
+   let uplaodImage;
+   try {
+    uplaodImage=await couldinary.uploader.upload(req.file.path,{
+      folder:'Menu Pizza',resource_type:'image'
+    })
+
+   } catch (error) {
+
+    res.status(500).json('Image Does not Uploaded')
+    
+   }
+
+   fileData={
+    fileName:req.file.originalname,
+    filePath:req.file.secure_url,
+    fileType:req.file.type,
+    fileSize:fileSizeFormatter(req.file.size,2)
+   }
+   
+  }
+
+  const UpdateMenu=await Menu.findByIdAndUpdate({_id:id},{
+    name,
+    ingredients,
+    discount,
+    flavors,
+    sizes,
+    soldOut,
+    price,
+    category,
+    image:Object.keys(fileData).length === 0 ? findMenu?.image : fileData
+  },{
+    new:true,
+    runValidators:true
+  })
+
+  res.status(201).json(UpdateMenu)
+
+}
   
 
  
@@ -104,5 +160,6 @@ const getItemById=asyncHandler( async (req,res)=>{
     createMenu,
     getMenu,
     deleteMenuItem,
-    getItemById
+    getItemById,
+    updateMenu
  }

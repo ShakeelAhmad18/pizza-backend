@@ -29,6 +29,25 @@ const menuSchema=mongoose.Schema(
         totalPrice:{
             type:Number,
         },
+        discount:{
+            type:Number,
+            default:0
+        },
+        sizes:[
+            {
+            size:{
+                type:String,
+                default:'small'
+            }
+           }
+        ],
+        flavors:[
+            {
+            flavor:{
+                type:String
+            }
+           }
+        ],
         category:{
           type:String,
           default:'pizza'
