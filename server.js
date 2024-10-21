@@ -13,6 +13,7 @@ const session=require('express-session')
 const passport = require('passport')
 const User = require('./model/userModel')
 const drinkRoute=require('./routes/drinkRoute')
+const tableRoute=require('./routes/tableRoute')
 
 const app=express();
 app.use(express.json())
@@ -101,6 +102,7 @@ passport.use(
   app.use('/api/user',userRoute)
   app.use('/api/order',orderRoute)
   app.use('/api/drink',drinkRoute)
+  app.use('/api/table',tableRoute)
   
   
 
