@@ -20,7 +20,7 @@ const createTableBooking=asyncHandler( async (req,res)=>{
 
    res.status(201).json(table)
 
-
+   
 } )
 
  const getBookingsWithDate=asyncHandler( async (req,res)=>{

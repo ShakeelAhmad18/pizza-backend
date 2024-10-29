@@ -25,14 +25,12 @@ const couldinary=require('cloudinary').v2
     res.status(500)
     throw new Error('Images could not be uploaded')
   }
-
     fileData = {
         fileName:req.file.originalname,
         filePath:uploadFile.secure_url,
         fileType:req.file.type,
         fileSize: fileSizeFormatter(req.file.size,2)
     }
-
 }
 
  const menu=await Menu.create({

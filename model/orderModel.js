@@ -20,6 +20,12 @@ const orderSchema = mongoose.Schema(
         },
         itemtotalprice:{
           type:Number,
+        },
+        size:{
+          type:String
+        },
+        flavour:{
+          type:String
         }
       }
     ],

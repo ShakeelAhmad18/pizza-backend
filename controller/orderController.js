@@ -8,14 +8,14 @@ const axios=require('axios')
 
 
 const createOrder=asyncHandler( async (req,res)=>{
-
+     
     const {phone,address,totalPrice,items,orderNo}=req.body;
 
     if( !phone || !address || !totalPrice || !Array.isArray(items) ){
         res.status(401)
         throw new Error('Fill All Fields')
     }
-
+    
     const order=await Order.create({
         userId:req.user.id,
         orderNo,
@@ -205,7 +205,7 @@ const sendEmail = asyncHandler(async (req, res) => {
     `,
   };
 
-
+  
   try {
     const response = await axios.post('https://api.mailersend.com/v1/email', emailData, {
       headers: {
@@ -228,3 +228,4 @@ module.exports={
     trackOrder,
     sendEmail
 }
+

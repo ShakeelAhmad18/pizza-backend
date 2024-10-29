@@ -107,12 +107,13 @@ if(passwordIsCorrect){
 }
 
 if(user && passwordIsCorrect){
-  const {_id,name,email,role}=user;
+  const {_id,name,email,role,profilePic}=user;
   res.status(200).json(
     {
       _id,
       name,
       email,
+      profilePic,
       role,
       token
     }
@@ -160,11 +161,12 @@ const getUser= asyncHandler(async (req,res)=>{
      const user=await User.findById(req.user._id);
 
      if(user){
-        const {_id,name,email}=user;
+        const {_id,name,email,profilePic}=user;
         res.status(200).json({
             _id,
             email,
-            name
+            name,
+            profilePic
         })
      }else{
         res.status(401)
