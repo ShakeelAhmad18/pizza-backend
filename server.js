@@ -14,6 +14,7 @@ const passport = require('passport')
 const User = require('./model/userModel')
 const drinkRoute=require('./routes/drinkRoute')
 const tableRoute=require('./routes/tableRoute')
+const contactRoute=require('./routes/contactRoute')
 
 const app=express();
 app.use(express.json())
@@ -103,6 +104,7 @@ passport.use(
   app.use('/api/order',orderRoute)
   app.use('/api/drink',drinkRoute)
   app.use('/api/table',tableRoute)
+  app.use('/api/contact',contactRoute)
   
   
 

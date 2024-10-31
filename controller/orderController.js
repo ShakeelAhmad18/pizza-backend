@@ -110,11 +110,13 @@ const sendEmail = asyncHandler(async (req, res) => {
     console.log('items is not array')
   }
 
-  const apiKey = 'mlsn.5ae9b50004bc60bd2a09a98d501563d6b46c03db2415a4267ee09a6f4687739c';
+  const apiKey ='mlsn.60d56bbfd5c24b18121531b22636c34ce675ab754a9bff55d3649dd49ac39360';
   
   const itemsList = items.map(item => {
     return `
       <p>Item: <span class="highlight">${item.name}</span></p>
+      <p>Size: <span class="highlight">${item.size}</span>
+      <p>Flavour: <span class="highlight">${item.flavour}</span>
       <p>Quantity: <span class="highlight">${item.quantity}</span></p>
       <p>Total Price for Item: <span class="highlight">$${item.totalPrice}</span></p>
       <img src="${item.image?.filePath}" alt="${item.name}" style="width: 100px;" />
@@ -124,7 +126,7 @@ const sendEmail = asyncHandler(async (req, res) => {
 
   const emailData = {
     from: {
-      email: 'no-reply@trial-jy7zpl9r2r3l5vx6.mlsender.net', 
+      email: 'no-reply@trial-zr6ke4nnw3m4on12.mlsender.net',
       name: 'Pizza Delicious',
     },
     to: [
