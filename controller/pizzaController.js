@@ -96,11 +96,12 @@ const getItemById=asyncHandler( async (req,res)=>{
 
 //updated the menu
 
-const updateMenu=async (req,res)=>{
+const updateMenu=asyncHandler( async (req,res)=>{
+
    const {name,ingredients,price,category,sizes,flavors,discount,soldOut}=req.body;
    const {id}=req.params;
 
-   const findMenu=await Menu.findById(id)
+   const findMenu=await Menu.findById(id);
 
    if(!findMenu){
     return res.status(404).json('Item not Found')
@@ -108,29 +109,28 @@ const updateMenu=async (req,res)=>{
 
 
    //handle Upload Image
-   const fileData={};
+   let fileData={};
 
-   if(req.file){
-   //save the image to cloudinary;
-   let uplaodImage;
+   if(req.file)
+  {
+   //save image to cloudinary
+   let uploadFile;
    try {
-    uplaodImage=await couldinary.uploader.upload(req.file.path,{
-      folder:'Menu Pizza',resource_type:'image'
-    })
-
+     uploadFile=await couldinary.uploader.upload(req.file.path,{
+         folder:"Menu Pizza",resource_type:'image'
+     })
    } catch (error) {
-
-    res.status(500).json('Image Does not Uploaded')
-    
+     res.status(500)
+     throw new Error('Images could not be uploaded')
    }
 
-   fileData={
+   fileData = {
     fileName:req.file.originalname,
-    filePath:req.file.secure_url,
+    filePath:uploadFile.secure_url,
     fileType:req.file.type,
-    fileSize:fileSizeFormatter(req.file.size,2)
-   }
-   
+    fileSize: fileSizeFormatter(req.file.size,2)
+}
+
   }
 
   const UpdateMenu=await Menu.findByIdAndUpdate({_id:id},{
@@ -142,18 +142,19 @@ const updateMenu=async (req,res)=>{
     soldOut,
     price,
     category,
-    image:Object.keys(fileData).length === 0 ? findMenu?.image : fileData
+    image:Object.keys(fileData).length === 0 ? 'there is error' : fileData,
   },{
     new:true,
     runValidators:true
   })
 
+
   res.status(201).json(UpdateMenu)
 
-}
+ })
   
 
- 
+
  module.exports={
     createMenu,
     getMenu,

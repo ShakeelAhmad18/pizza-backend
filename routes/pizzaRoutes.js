@@ -9,6 +9,6 @@ const {createMenu, getMenu, deleteMenuItem, getItemById, updateMenu} = require('
  router.get('/menu',getMenu)
  router.delete('/menu/:id',deleteMenuItem)
  router.get('/getItem/:id',getItemById)
- router.patch('/updateMenu/:id',updateMenu)
+ router.patch('/updateMenu/:id',upload.single("image"),updateMenu)
 
  module.exports=router;
