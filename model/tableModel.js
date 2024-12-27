@@ -1,38 +1,34 @@
-const mongoose=require('mongoose')
+const mongoose = require('mongoose');
 
-const tableSchema=mongoose.Schema(
+const tableSchema = new mongoose.Schema(
     {
-        name:{
-            type:String,
-            required:[true,'Add Name']
-        },
-        email:{
-            type:String,
-            trim:true,
-            required:[true,'Add Email'],
-            match: [/.+\@.+\..+/, 'Please fill a valid email address'], // Email validation
-        },
-        phone:{
-            type:String,
-            required:[true,'Add Phone Number']
-        },
-        date:{
-            type:Date,
-            required:true
-        },
-        Time:{
-            type:String,
-            required:true
-        },
-        persons:{
-            type:String,
-            required:true
-        }
+  name: { 
+    type: String,
+     required: true 
     },
-    {
-        timestamps:true
+  capacity: { 
+    type: Number,
+     required: true 
+    },
+    tableDescription:{
+        type:String,
+        required:true
+    },
+  image: {
+     type: Object, 
+     default:{}
+    },
+    discount:{
+        type:Number,
+        default:0
     }
-)
+},
+{
+    timestamps:true
+});
+
 
 const Table=mongoose.model('Table',tableSchema);
-module.exports=Table;
+module.exports = Table;
+
+

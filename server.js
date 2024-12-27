@@ -15,6 +15,8 @@ const User = require('./model/userModel')
 const drinkRoute=require('./routes/drinkRoute')
 const tableRoute=require('./routes/tableRoute')
 const contactRoute=require('./routes/contactRoute')
+const adminRoute=require('./routes/adminRoute');
+const tableReservationRoute=require('./routes/tableReservationRoute')
 
 const app=express();
 app.use(express.json())
@@ -97,7 +99,7 @@ passport.use(
     })
  })
    
-  
+  //middleware
   app.use('/uploads', express.static(path.join(__dirname,'uploads')))
   app.use('/api/pizza',pizzaRoutes)
   app.use('/api/user',userRoute)
@@ -105,9 +107,13 @@ passport.use(
   app.use('/api/drink',drinkRoute)
   app.use('/api/table',tableRoute)
   app.use('/api/contact',contactRoute)
-  
-  
+  app.use('/api/admin',adminRoute)
+  app.use('/api/tablereservation',tableReservationRoute)
 
+  
+  
  app.listen(PORT,(req,res)=>{
     console.log(`The server is running on port ${PORT}`)
  })
+
+

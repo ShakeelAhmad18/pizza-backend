@@ -47,7 +47,7 @@ const getOrder=asyncHandler( async (req,res)=>{
    const {id}=req.params;
    const order=await Order.findById(id).populate({
     path:'items.itemId',
-    select:'name image.filePath'
+    select:'name image.filePath price'
    });
 
    if(!order){
@@ -90,7 +90,7 @@ const trackOrder=asyncHandler( async (req,res)=>{
    const {orderNo}=req.body;
    const order=await Order.findOne({orderNo}).populate({
     path:'items.itemId',
-    select:'name image.filePath'
+    select:'name image.filePath price'
    })
 
    if(!order){
