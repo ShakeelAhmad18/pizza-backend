@@ -132,8 +132,9 @@ const updateMenu=asyncHandler( async (req,res)=>{
 }
 
   }
+  
 
-  const UpdateMenu=await Menu.findByIdAndUpdate({_id:id},{
+ const updateData = {
     name,
     ingredients,
     discount,
@@ -142,11 +143,22 @@ const updateMenu=asyncHandler( async (req,res)=>{
     soldOut,
     price,
     category,
-    image:Object.keys(fileData).length === 0 ? 'there is error' : fileData,
-  },{
-    new:true,
-    runValidators:true
-  })
+};
+
+// Conditionally add `image` only if `fileData` has valid content
+if (Object.keys(fileData).length !== 0) {
+    updateData.image = fileData; // Add the image only when `fileData` is valid
+}
+
+const UpdateMenu = await Menu.findByIdAndUpdate(
+    { _id: id },
+    updateData, // Use the dynamically built `updateData` object
+    {
+        new: true,
+        runValidators: true,
+    }
+);
+
 
 
   res.status(201).json(UpdateMenu)

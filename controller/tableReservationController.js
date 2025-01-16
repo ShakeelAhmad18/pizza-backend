@@ -74,12 +74,17 @@ const updateReservationStatus = async (req, res) => {
 const getAllReservations = async (req, res) => {
 
     try {
-        const reservations = await TableReservation.find().populate('tableId','name image').populate('userId', 'name email');
+        const reservations = await TableReservation.find()
+            .populate('tableId', 'name image')
+            .populate('userId', 'name email').sort('-createdAt');
         res.status(200).json({ reservations });
     } catch (error) {
+        console.error('Error fetching reservations:', error); // Log error
         res.status(400).json({ message: error.message });
     }
-}
+
+};
+
 
 
 //get all Reservations by user

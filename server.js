@@ -3,9 +3,11 @@ const mongoose=require('mongoose')
 const dotenv=require('dotenv').config()
 const pizzaRoutes=require('./routes/pizzaRoutes')
 const path=require('path')
+const cron=require('node-cron')
 const cookieParse=require('cookie-parser')
 const bodyParser=require('body-parser')
 const cors=require('cors')
+const winston = require('winston');
 const userRoute=require('./routes/userRoute')
 const orderRoute=require('./routes/orderRoute')
 const passportAuth2=require('passport-google-oauth2').Strategy;
@@ -17,6 +19,9 @@ const tableRoute=require('./routes/tableRoute')
 const contactRoute=require('./routes/contactRoute')
 const adminRoute=require('./routes/adminRoute');
 const tableReservationRoute=require('./routes/tableReservationRoute')
+const timeSlotRoute=require('./routes/timeSlotRoute');
+const settingsRoute=require('./routes/settingsRoute')
+const { generateNextDaySlots } = require('./controller/restaurantController')
 
 const app=express();
 app.use(express.json())
@@ -33,7 +38,6 @@ app.use(cors(
 
 
 const PORT=8000
-
 
 //session setup for google login
 
@@ -98,7 +102,9 @@ passport.use(
         res.send('Home Page pizza')
     })
  })
-   
+
+
+ 
   //middleware
   app.use('/uploads', express.static(path.join(__dirname,'uploads')))
   app.use('/api/pizza',pizzaRoutes)
@@ -109,7 +115,32 @@ passport.use(
   app.use('/api/contact',contactRoute)
   app.use('/api/admin',adminRoute)
   app.use('/api/tablereservation',tableReservationRoute)
+  app.use('/api/restaurant',timeSlotRoute)
+  app.use('/api/settings',settingsRoute)
 
+  // Create a logger
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json()
+    ),
+    transports: [
+      new winston.transports.File({ filename: 'cron.log' }),
+      new winston.transports.Console()
+    ]
+  });
+
+  // Schedule the cron job to run every day at midnight
+  cron.schedule('0 0 * * *', async () => {
+    logger.info('Running daily slot generation...');
+    try {
+      await generateNextDaySlots();
+      logger.info('Next day\'s time slots generated successfully.');
+    } catch (error) {
+      logger.error(`Error generating time slots: ${error.message}`);
+    }
+  });
   
   
  app.listen(PORT,(req,res)=>{

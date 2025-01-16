@@ -1,34 +1,50 @@
 const mongoose = require('mongoose');
 
-const tableSchema = new mongoose.Schema(
-    {
-  name: { 
+const tableSchema = new mongoose.Schema({
+
+  tableId: { 
     type: String,
-     required: true 
-    },
+    required: true,
+    unique: true
+  }, 
+  name: { 
+    type: String, 
+    required: true 
+  },   // Name or label (e.g., "Table 1")
+  type: { 
+    type: String, 
+    required: true, 
+    enum: ["Standard", "VIP"], // Possible table types
+  },
   capacity: { 
     type: Number,
-     required: true 
+    required: true
+  },
+  area: {
+    type: String,
+    required: true,
+    enum: ["DJBooth", "Bar360", "BarArea", "VIPArea"], 
+  },
+  image:{
+    type:Object,
+    default:{}
+  },
+  reservations: [{
+    date: { 
+      type: Date
     },
-    tableDescription:{
-        type:String,
-        required:true
+    time: { 
+      type: String
     },
-  image: {
-     type: Object, 
-     default:{}
-    },
-    discount:{
-        type:Number,
-        default:0
+    capacity: { 
+      type: Number, 
     }
-},
-{
-    timestamps:true
+  }]
+}, 
+{ 
+  timestamps: true 
 });
 
 
-const Table=mongoose.model('Table',tableSchema);
+const Table = mongoose.model('Table', tableSchema);
 module.exports = Table;
-
-
